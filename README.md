@@ -1,5 +1,4 @@
 # Artifact Reduction
-<<<<<<< HEAD
 
 一些 CT 图像中常见伪影的矫正或缓解的**解析**方案
 
