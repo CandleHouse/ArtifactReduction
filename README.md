@@ -1,3 +1,5 @@
+![](./my-project/docs/img/LOGO_words.png)
+
 # Artifact Reduction
 
 一些 CT 图像中常见伪影的矫正或缓解的**解析**方案
@@ -13,11 +15,13 @@
   - 金属硬化矫正 (TODO)
 
 
-- 环状伪影 (Ring artifacts)
+- 环状伪影 (Ring artifact)
 
 
-- 截断伪影 (Truncated artifact)
-- 有限角伪影 (Limited view artifact )
+- 截断伪影 (Truncation artifact)
+
+
+- 有限角伪影 (Limited view artifact)
 
 
 - 其他 (正在学习补充……)
