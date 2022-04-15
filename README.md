@@ -1,4 +1,4 @@
-![](./my-project/docs/img/LOGO_words.png)
+![](.assets/LOGO_words.png)
 
 # Artifact Reduction
 
