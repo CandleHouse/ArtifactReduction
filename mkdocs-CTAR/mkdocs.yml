@@ -1,0 +1,57 @@
+site_name: CT Artifact Reduction
+site_url: https://example.com/
+
+repo_name: ArtifactReduction
+repo_url: https://github.com/CandleHouse/ArtifactReduction
+
+nav:
+  - index.md
+  - 杯状伪影:
+      - 简介: 杯状伪影/杯状伪影.md
+      - 矫正方案：水束硬化: 杯状伪影/水束硬化.md
+      - 矫正方案：散射: 杯状伪影/散射.md
+  - 硬化伪影:
+      - 简介: 硬化伪影/硬化伪影.md
+      - 矫正方案：骨硬化: 硬化伪影/骨硬化.md
+      - 矫正方案：金属硬化: 硬化伪影/金属硬化.md
+  - 环状伪影: 环状伪影.md
+  - 截断伪影: 截断伪影.md
+  - 有限角伪影: 有限角伪影.md
+  - 附录.md
+
+theme:
+  name: material  # 主题名称
+  favicon: img/LOGO/LOGO.png  # 浏览器标签图标
+  language: zh  # 语言
+  features:
+    - navigation.expand  # 全打开
+    - navigation.top  # 回到上方
+    - toc.integrate  # 左侧合并
+  icon:
+    repo: fontawesome/brands/git-alt  # 库图标
+
+markdown_extensions:
+  - attr_list  # 图片
+  - md_in_html  # 图片
+  - def_list  # 子标题
+  - tables  # 表格
+  - footnotes  # 角标
+
+  - pymdownx.emoji:  # 表情
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+
+  - pymdownx.arithmatex:
+      generic: true  # 数学公式
+
+  - admonition  # 蓝色警告
+  - pymdownx.details
+  - pymdownx.superfences
+
+extra_css:
+  - stylesheets/extra.css  # 心脏跳动
+
+extra_javascript:  # 公式检查
+  - javascripts/mathjax.js
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
