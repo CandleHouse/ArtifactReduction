@@ -18,4 +18,6 @@ jobs:
           path: .cache
       - run: pip install mkdocs-material
       - run: cd ./mkdocs-CTAR
+      - run: ls
+      - run: pwd
       - run: mkdocs gh-deploy --force
