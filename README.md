@@ -1,4 +1,4 @@
-![](img/LOGO/LOGO_words.png)
+![](./.assets/LOGO_words.png)
 
 # Welcome to CT Artifact Reduction
 
