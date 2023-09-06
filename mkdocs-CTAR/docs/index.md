@@ -26,7 +26,7 @@
     1. 有限角度 (Limited angle)
     2. 稀疏视角 (Sparse view)
     
-- 几何伪影 (Geometric artifact)
+- [几何伪影 (Geometric artifact)](./几何伪影.md)
 
 
 - 其他 (正在学习补充……)
