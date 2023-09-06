@@ -1,0 +1,1083 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://example.com/%E5%87%A0%E4%BD%95%E4%BC%AA%E5%BD%B1/">
+      
+      
+        <link rel="prev" href="../%E6%9C%89%E9%99%90%E8%A7%92%E4%BC%AA%E5%BD%B1/">
+      
+      
+        <link rel="next" href="../%E9%99%84%E5%BD%95/">
+      
+      
+      <link rel="icon" href="../img/LOGO/LOGO.png">
+      <meta name="generator" content="mkdocs-1.5.2, mkdocs-material-9.2.8">
+    
+    
+      
+        <title>几何伪影 - CT Artifact Reduction</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.046329b4.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#geometric-artifact" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href=".." title="CT Artifact Reduction" class="md-header__button md-logo" aria-label="CT Artifact Reduction" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            CT Artifact Reduction
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              几何伪影
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/CandleHouse/ArtifactReduction" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    ArtifactReduction
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="CT Artifact Reduction" class="md-nav__button md-logo" aria-label="CT Artifact Reduction" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    CT Artifact Reduction
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/CandleHouse/ArtifactReduction" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    ArtifactReduction
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    杯状伪影
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            杯状伪影
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E6%9D%AF%E7%8A%B6%E4%BC%AA%E5%BD%B1/%E6%9D%AF%E7%8A%B6%E4%BC%AA%E5%BD%B1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    简介
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E6%9D%AF%E7%8A%B6%E4%BC%AA%E5%BD%B1/%E6%B0%B4%E6%9D%9F%E7%A1%AC%E5%8C%96/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    矫正方案：水束硬化
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E6%9D%AF%E7%8A%B6%E4%BC%AA%E5%BD%B1/%E6%95%A3%E5%B0%84/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    矫正方案：散射
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    硬化伪影
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            硬化伪影
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E7%A1%AC%E5%8C%96%E4%BC%AA%E5%BD%B1/%E7%A1%AC%E5%8C%96%E4%BC%AA%E5%BD%B1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    简介
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E7%A1%AC%E5%8C%96%E4%BC%AA%E5%BD%B1/%E9%AA%A8%E7%A1%AC%E5%8C%96/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    矫正方案：骨硬化
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E7%A1%AC%E5%8C%96%E4%BC%AA%E5%BD%B1/%E9%87%91%E5%B1%9E%E7%A1%AC%E5%8C%96/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    矫正方案：金属硬化
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E7%8E%AF%E7%8A%B6%E4%BC%AA%E5%BD%B1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    环状伪影
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E6%88%AA%E6%96%AD%E4%BC%AA%E5%BD%B1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    截断伪影
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E6%9C%89%E9%99%90%E8%A7%92%E4%BC%AA%E5%BD%B1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    有限角伪影
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    几何伪影
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    几何伪影
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    1. 伪影的表现形式
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    2. 伪影的产生原因
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    3. 矫正方案
+  </a>
+  
+    <nav class="md-nav" aria-label="3. 矫正方案">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#0-pmatrix" class="md-nav__link">
+    0. PMatrix
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1_1" class="md-nav__link">
+    方案1. 离线矫正 —— 螺旋钢珠模体几何矫正
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#11-pmatrix" class="md-nav__link">
+    1.1 通过 pMatrix 反解几何参数
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_1" class="md-nav__link">
+    方案2. 在线矫正 —— 自矫正
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    4. 代码实现
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E9%99%84%E5%BD%95/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    附录
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="geometric-artifact">几何伪影 (Geometric artifact)</h1>
+<h3 id="1">1. 伪影的表现形式</h3>
+<p>下图左侧为螺旋钢珠模体重建截面，右侧为脊椎模体重建截面。</p>
+<figure>
+<p><img _="," alt="几何伪影的表现形式" loading="lazy" src="../img/GA/GAExample.png" width="500" />
+    <figcaption>Fig 1. 几何伪影的表现形式</figcaption></p>
+</figure>
+<h3 id="2">2. 伪影的产生原因</h3>
+<p><strong>几何伪影由 CT 扫描期间 x 射线探测器和光源的非圆形轨迹引起。</strong>对于临床或工业CT系统，旋转患者或特定重物是不可行的，因此，普遍采用旋转 x 射线源和探测器的机架。在这种情况下，几何参数在CT扫描过程中会发生抖动。如果在不同的 view 之间使用相同的几何参数，重建图像会表现出由几何形变和抖动产生的几何伪影。相较于诊断 CT ，开放式机架的 C-arm CT 几何伪影会更为严重，尤其是没有配备滑环会使得几何伪影更加明显。</p>
+<h3 id="3">3. 矫正方案</h3>
+<p>精确的几何伪影矫正需要测量计算出每个 view 的几何参数，然后用几何参数构造出每个 view 被扫描物体与探测器之间的<strong>投影矩阵</strong> pMatrix，最后用于重建。</p>
+<h4 id="0-pmatrix">0. PMatrix</h4>
+<p><span style="font-size: 26px;"><a href="../PDF/pmatrix_fbp.pdf">完整 pMatrix 定义说明 PDF</a></span></p>
+<p>pMatrix 的定义在不同 CT 系统软件中大相径庭，但其原理是相通的，此处我们以 <a href="https://github.com/CandleHouse/mangoct">mangoct 系列软件</a> 中使用的 pMatrix 定义为准。</p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>pMatrix 称之为<strong>投影矩阵</strong>，指代其拟合了被扫描的 3D 物体到 2D 探测器上的投影过程，而<strong>不是指投影变换</strong>。事实上，pMatrix 是拥有12个自由度的<strong>仿射变换</strong>矩阵。</p>
+</div>
+<p>通过文档，我们知道了：</p>
+<ol>
+<li><strong>Theory</strong>：如何根据已知几何参数构建出每个 view 的 pMatrix</li>
+<li><strong>Experimental considerations</strong>：如何根据重建图中的点 <span class="arithmatex">\((x_i,y_i,z_i)\)</span> 和投影图中的对应点 <span class="arithmatex">\((u_i,v_i)\)</span> 拟合出 pMatrix</li>
+</ol>
+<p>Q：那么这两种获得 pMatrix 的方案有什么用呢？</p>
+<p>A1：<strong>Theory</strong> 方案可以根据系统理想几何参数构建 pMatrix，使用这个 pMatrix 重建将与不带任何偏移参数的重建结果一致。这种方法主要用于<strong>在线矫正</strong>方案，通过对几何参数建模，优化得到每个 view 的参数估计，然后构建出 pMatrix 完成几何矫正。</p>
+<p>A2：<strong>Experimental considerations</strong> 方案主要用于<strong>离线矫正</strong>，特指使用钢珠模体的传统矫正方法，通过找点拟合，直接构建出 pMatrix 完成几何矫正。</p>
+<h4 id="1_1">方案1. 离线矫正 —— 螺旋钢珠模体几何矫正</h4>
+<figure>
+<p><img alt="geo_calibration_workflow" src="../img/GA/geo_calibration_workflow.png" />
+  </p>
+<figcaption>Fig 2. 螺旋钢珠模体几何矫正流程</figcaption>
+</figure>
+<p><strong>坐标系定义：</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Name</th>
+<th>Coordinate system</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">模体设计蓝图坐标系，三维坐标零点在 3D 模型底部中心</td>
+<td><span class="arithmatex">\(O_{xyz}^b\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">FDK 重建图像坐标系，实图，三维坐标零点在重建的第一片 slice 一角</td>
+<td><span class="arithmatex">\(O_{xyz}^{FDK}\)</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">重建程序坐标系，三维坐标零点在 3D volume 整体中心</td>
+<td><span class="arithmatex">\(O_{xyz}^{m}\)</span></td>
+</tr>
+</tbody>
+</table>
+<p><strong>使用螺旋钢珠几何矫正分为以下六步：</strong></p>
+<ol>
+<li>
+<p>根据模体设计蓝图，定义出蓝图坐标系 <span class="arithmatex">\(O_{xyz}^b\)</span>，并生成螺旋钢珠组的三维坐标 <span class="arithmatex">\(B^b_{img}\)</span>。</p>
+</li>
+<li>
+<p>用未校正的投影图，根据理想几何，直接重建带几何伪影的CT图。并从CT图的不同层找到钢珠位置，即找到实图坐标系 <span class="arithmatex">\(O_{xyz}^{FDK}\)</span> 中钢珠三维坐标 <span class="arithmatex">\(B^{FDK}_{img}\)</span>。（需要乘上物理尺寸，方便下一步仿射变换，尤其是在 Z轴 bin 过时；除此之外，乘上物理尺寸使得全局变换中钢珠三维坐标单位都是实际物理长度）</p>
+</li>
+<li>
+<p>拟合螺旋钢珠组坐标从蓝图标系  <span class="arithmatex">\(O_{xyz}^b\)</span> 到实图坐标系 <span class="arithmatex">\(O_{xyz}^{FDK}\)</span> 的 3-D 仿射变换矩阵 <span class="arithmatex">\(M_1=(B_{img}^b)^{+}B_{img}^{FDK}\)</span>。（上一步中由于对齐了物理尺寸，这一步仿射变换能拟合很好。）此时用拟合到实图坐标系的蓝图钢珠三维坐标 <span class="arithmatex">\(M_1 B^b_{img}\)</span> 作为校准目标，后续的几何矫正会把重建图中发生偏移的钢珠校准到当前位置。</p>
+</li>
+<li>
+<p>根据使用的重建程序，将钢珠三维坐标 <span class="arithmatex">\(M_1 B^b_{img}\)</span> 移动到重建坐标系  <span class="arithmatex">\(O_{xyz}^{m}\)</span> 中，得到最终校准目标位置 <span class="arithmatex">\(M_2M_1 B^b_{img}\)</span> 。</p>
+</li>
+<li>
+<p>拟合投影图钢珠坐标 <span class="arithmatex">\(B_{proj}\)</span> 到目标位置 <span class="arithmatex">\(M_2M_1 B^b_{img}\)</span> 的投影变换，即为 pMatrix。</p>
+</li>
+<li>
+<p>用 pMatrix 重建。</p>
+</li>
+</ol>
+<div class="admonition warning">
+<p class="admonition-title">注意</p>
+<ol>
+<li>使用蓝图拟合变换矩阵 <span class="arithmatex">\(M_1\)</span> 的作用是要求钢珠之间<strong>相对位置</strong>正确，坐标空间绝对位置不做要求。而实图钢珠<strong>绝对位置</strong>正确，钢珠之间的相对位置不一定正确。</li>
+<li>注意单位。在整个校准流程中，我们使用了两次找钢珠点坐标操作（找点是在无物理尺寸上的图像上进行的，没有单位）：<ul>
+<li>一次是在步骤 2 的重建图中 <span class="arithmatex">\(B^{FDK}_{img}\)</span>，需要乘上物理尺寸保证整个流程钢珠坐标都表示物理尺寸，也方便拟合</li>
+<li>一次是在步骤 5 的 <span class="arithmatex">\(B_{proj}\)</span> ，<strong>我们将物理尺寸放入了 pMatrix 拟合中</strong>，所以步骤 5 实际是无单位的 <span class="arithmatex">\(B_{proj}\)</span> 拟合到有单位的目标位置 <span class="arithmatex">\(M_2M_1 B^b_{img}\)</span> 过程</li>
+</ul>
+</li>
+</ol>
+</div>
+<div class="admonition note">
+<p class="admonition-title">提示</p>
+<p>上述几何矫正流程可以按迭代方式再次执行这六个步骤，以进一步提升矫正精度</p>
+</div>
+<div class="admonition hint">
+<p class="admonition-title">提示</p>
+<p>有条件的同学可以使用 <a href="https://github.com/SEU-CT-Recon/mandoct">mandoct </a> 重建。相比于 mangoct，支持在 fan/cone beam <strong>投影</strong>中使用 pMatrix，此外还有其他诸多改进。</p>
+</div>
+<figure>
+<p><img _="," alt="基于螺旋钢珠模体的几何矫正" loading="lazy" src="../img/GA/GAC_outcome.png" width="700" />
+    <figcaption>Fig 3. 基于螺旋钢珠模体的几何矫正</figcaption></p>
+</figure>
+<h4 id="11-pmatrix">1.1 通过 pMatrix 反解几何参数</h4>
+<div class="admonition help">
+<p class="admonition-title">提示</p>
+<p>由 <strong>Theory</strong> 方法构建出的 pMatrix 无需反解参数，因为构建 pMatrix 前每个 view 所有几何参数已经完全掌握。</p>
+</div>
+<p>通过 <strong>Experimental considerations</strong>  方案，我们直接用最小二乘拟合出了 pMatrix，但系统的几何参数无从知晓。通过参数反解，可以得到该系统各个参数的实际偏移，可以用于仿真实验模拟或者结构参数标定。可以说反解 pMatrix 十分重要。</p>
+<ul>
+<li>
+<p><strong>光源到中心，光源到探测器距离 <span class="arithmatex">\(SID\ \&amp;\ SDD\)</span></strong></p>
+<p><span class="arithmatex">\(pMatrix=[A^{-1},-A^{-1}\vec{x}_s]\)</span></p>
+<p><span class="arithmatex">\(A=[\hat{e}_u,\hat{e}_v,\vec{x}_{do}-\hat{x}_s]=(pMatrix[:][0:3])^{-1}\)</span></p>
+<p>则：<span class="arithmatex">\(\vec{x}_s=A\cdot -pMatrix[:][3]\)</span>，<span class="arithmatex">\(\vec{x}_{do}=A[:][2]+\vec{x}_s\)</span></p>
+<p><span class="arithmatex">\(\vec{x}_{do}\)</span> 是探测器一角 (1, 1) 对应的位置，需要换算到探测器中心的位置 <span class="arithmatex">\(\vec{x}_{d}\)</span></p>
+<p><span class="arithmatex">\(\vec{x}_{d}=\vec{x}_{do}+\frac{nu-1}{2}\times \hat{e}_u+\frac{nv-1}{2}\times\hat{e}_v\)</span></p>
+<p>最后，SID 和 SDD 的估计值为：</p>
+<p><span class="arithmatex">\(SID_{pred}=mean_{view}(\vec{x}_s)\)</span></p>
+<p><span class="arithmatex">\(SDD_{pred}=mean_{view}(\vec{x}_s - \vec{x}_d)\)</span></p>
+</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">提示</p>
+<p>在实际系统中，如果发现 <span class="arithmatex">\(SID_{pred}\)</span> 和 <span class="arithmatex">\(SDD_{pred}\)</span> 变化比较剧烈，可以采用如下替代方案：
+注意到系统放大倍率均值 <span class="arithmatex">\(m_{pred}= mean_{view}(pMatrix[2][3])\)</span>, 则当 <span class="arithmatex">\(SID_{pred}\)</span> 比较稳定时，<span class="arithmatex">\(SDD'_{pred}=SID_{pred}/m_{pred}\)</span>，反之亦然。</p>
+</div>
+<ul>
+<li>
+<p><strong>总扫描角度，每个 view 旋转角度 <span class="arithmatex">\(TotalScanAngle\ \&amp;\ anglePerView\)</span></strong></p>
+<p>计算 pMatrix 中每个扫描位置的角度，即 pMatrix 中扫描角度间隔</p>
+<p>总扫描角度 <span class="arithmatex">\(TotalScanAngle=arccos\left(\frac{\vec{x}_{s,begin}\cdot\vec{x}_{s,end}}{|\vec{x}_{s,begin}|\cdot|\vec{x}_{s,end}|}\right)\)</span></p>
+<p>扫描角度间隔 <span class="arithmatex">\(anglePerView=\frac{TotalScanAngle}{views-1}=\frac{1}{views-1}arccos\left(\frac{\vec{x}_{s,begin}\cdot\vec{x}_{s,end}}{|\vec{x}_{s,begin}|\cdot|\vec{x}_{s,end}|}\right)\)</span></p>
+</li>
+<li>
+<p><strong>偏移误差 <span class="arithmatex">\(\delta\vec{x}_s\ \&amp; \ \delta\vec{x}_d\ \&amp;\ \delta\hat{e}_u\ \&amp;\ \delta\hat{e}_v\)</span></strong>
+        <figure markdown>
+          <img _="," alt="投影系统坐标系" loading="lazy" src="../img/GA/coordinate_system.png" width="300" />
+            <figcaption>Fig 4. 投影系统坐标系</figcaption>
+        </figure></p>
+<p>得到了 anglePerView 我们就能恢复每次扫描的方向：</p>
+<p><span class="arithmatex">\(\beta=anglePerView\times view+ImageRotation\)</span></p>
+<p><span class="arithmatex">\(\hat r=[cos\beta,sin\beta,0]\)</span></p>
+<p><span class="arithmatex">\(\hat\beta=[-sin\beta,cos\beta,0]\)</span></p>
+<p><span class="arithmatex">\(\hat\alpha=[0, 0, 1]\)</span></p>
+<p>修正后的 <span class="arithmatex">\(\vec{x}_{s,corr}=\hat r \times SID_{pred}\)</span></p>
+<p>修正后的 <span class="arithmatex">\(\vec{x}_{d,corr}=\hat r \times ({SID_{pred}-SDD'_{pred}})\)</span></p>
+<p>修正后的 <span class="arithmatex">\(\hat{e}_{u,corr}=-\hat\beta\times du\)</span></p>
+<p>修正后的  <span class="arithmatex">\(\hat{e}_{v,corr}=\hat\alpha\times dv\)</span></p>
+<p>光源偏移 <span class="arithmatex">\(\delta\vec{x}_s=\vec{x}_s-\vec{x}_{s,corr}=A\cdot -pMatrix[:][3]-\hat r \times SID_{pred}\)</span></p>
+<p>探测器偏移 <span class="arithmatex">\(\delta\vec{x}_d=\vec{x}_d-\vec{x}_{d,corr}=(A[:][2]+\vec{x}_s)+(\frac{nu-1}{2}\times \hat{e}_u+\frac{nv-1}{2}\times\hat{e}_v)-\hat r \times ({SID_{pred}-SDD'_{pred}})\)</span></p>
+<p>探测器水平旋转误差 <span class="arithmatex">\(\delta\hat{e}_u=\hat{e}_u-\hat{e}_{u,corr}=A[:][0]+\hat\beta\times du\)</span></p>
+<p>探测器垂直旋转误差 <span class="arithmatex">\(\delta\hat{e}_v=\hat{e}_v-\hat{e}_{v,corr}=A[:][1]-\hat\alpha\times dv\)</span></p>
+</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">提示</p>
+<p>由于 <span class="arithmatex">\(SID_{pred}\)</span> 和 <span class="arithmatex">\(SDD_{pred}\)</span> 的计算方式不唯一，可根据实际系统变化最平稳的组合计算上述偏移误差</p>
+</div>
+<ul>
+<li>
+<p><strong>u, v 方向偏移 <span class="arithmatex">\(\Delta u\ \&amp;\ \Delta v\)</span></strong></p>
+<p>这是最直观感受系统探测器偏移误差的处理方法，会将上面的所有误差融合为在探测器的水平和垂直方向误差 <span class="arithmatex">\(\Delta u\ \&amp;\ \Delta v\)</span></p>
+<p>该方法需要 <strong>Theory </strong>方案，根据系统理想几何参数构建 pMatrix，使用这个 pMatrix 重建将与不带任何偏移参数的重建结果一致。</p>
+<p>选取三维坐标任意一点 <span class="arithmatex">\(B_{img}^{p}=[0, 0, 0, 1]\)</span> 代表钢珠在重建系统中位置。</p>
+<p><span class="arithmatex">\(\Delta u=[(pMatrix-pMatrix_{m})\cdot B_{img}^{p}][0]\times du\)</span></p>
+<p><span class="arithmatex">\(\Delta v=[(pMatrix-pMatrix_{m})\cdot B_{img}^{p}][1]\times dv\)</span></p>
+</li>
+</ul>
+<h4 id="2_1">方案2. 在线矫正 —— 自矫正</h4>
+<p>借助模体的矫正方案精度较高，实现容易。但在实际系统中需要每个月矫正几何，且矫正精度与模体精度相关。</p>
+<p>使用纯软件方法无需借助模体，实现复杂。这类方法会对几何建模，根据被扫描物体先验设定目标优化得到几何参数。</p>
+<p>如 3D-2D 配准优化方案<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>，该方法在获得了被扫描物体的 CAD 模型后，通过不断 3D 投影，寻找与真实投影之间误差最小的几何参数构建重建矩阵，理论上能获得较高的矫正精度，但优化器重复投影将带来较大计算量。</p>
+<figure>
+<p><img _="," alt="基于 3D-2D 配准的几何矫正" loading="lazy" src="../img/GA/3D-2D.png" width="400" />
+    <figcaption>Fig 5. 基于 3D-2D 配准的几何矫正</figcaption></p>
+</figure>
+<h3 id="4">4. 代码实现</h3>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">1. Theory方案生成 pMatrix 关键代码</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">gen_pMatrix</span><span class="p">(</span><span class="n">projOffsetD_list</span><span class="p">,</span> <span class="n">projOffsetS_list</span><span class="p">,</span> <span class="n">projOffsetEU_list</span><span class="p">,</span> <span class="n">projOffsetEV_list</span><span class="p">,</span>
+                <span class="n">postfix</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;./params&#39;</span><span class="p">,</span> <span class="n">Views</span><span class="o">=</span><span class="mi">360</span><span class="p">,</span> <span class="n">TotalScanAngle</span><span class="o">=</span><span class="mi">360</span><span class="p">):</span>
+    <span class="n">Views</span> <span class="o">=</span> <span class="n">Views</span>
+    <span class="n">TotalScanAngle</span> <span class="o">=</span> <span class="n">TotalScanAngle</span>  <span class="c1"># inverse direction corresponding to the config file</span>
+    <span class="n">anglePerView</span> <span class="o">=</span> <span class="n">TotalScanAngle</span> <span class="o">/</span> <span class="n">Views</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="mi">750</span>  <span class="c1"># SID</span>
+    <span class="n">D</span> <span class="o">=</span> <span class="mi">1060</span>  <span class="c1"># SDD</span>
+    <span class="n">du</span> <span class="o">=</span> <span class="mf">0.4</span>
+    <span class="n">dv</span> <span class="o">=</span> <span class="mf">0.4</span>
+    <span class="n">nu</span> <span class="o">=</span> <span class="mi">750</span>
+    <span class="n">sliceCount</span> <span class="o">=</span> <span class="n">nv</span> <span class="o">=</span> <span class="mi">750</span>
+    <span class="n">ImageRotation</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># rotate again, commonly don&#39;t change</span>
+
+    <span class="n">pMatrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">Views</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Views</span><span class="p">):</span>
+        <span class="n">beta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">anglePerView</span> <span class="o">*</span> <span class="n">i</span> <span class="o">+</span> <span class="n">ImageRotation</span><span class="p">)</span>
+        <span class="n">e_u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">beta</span><span class="p">),</span>  <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">beta</span><span class="p">),</span>   <span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">du</span> <span class="o">+</span> <span class="n">projOffsetEU_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">e_v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span>              <span class="mi">0</span><span class="p">,</span>              <span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="n">dv</span> <span class="o">+</span> <span class="n">projOffsetEV_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">x_d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">beta</span><span class="p">),</span>   <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">beta</span><span class="p">),</span>   <span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="n">R</span> <span class="o">-</span> <span class="n">D</span><span class="p">)</span>
+        <span class="n">x_s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">beta</span><span class="p">),</span>   <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">beta</span><span class="p">),</span>   <span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">R</span> <span class="o">+</span> <span class="n">projOffsetS_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+        <span class="n">det_center_side_u</span> <span class="o">=</span> <span class="p">(</span><span class="n">nu</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">projOffsetD_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="n">du</span>
+        <span class="n">det_center_side_v</span> <span class="o">=</span> <span class="p">(</span><span class="n">sliceCount</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>  <span class="c1"># frozen in fan beam</span>
+        <span class="n">x_do</span> <span class="o">=</span> <span class="n">x_d</span> <span class="o">-</span> <span class="n">det_center_side_u</span> <span class="o">*</span> <span class="n">e_u</span> <span class="o">-</span> <span class="n">det_center_side_v</span> <span class="o">*</span> <span class="n">e_v</span>
+
+        <span class="c1"># projOffsetD_list random direction vector condition</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">projOffsetD_list</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)):</span>
+            <span class="n">x_do</span> <span class="o">=</span> <span class="n">x_do</span> <span class="o">-</span> <span class="p">(</span><span class="n">projOffsetD_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="n">du</span> <span class="o">*</span> <span class="n">e_u</span><span class="p">)</span> <span class="o">+</span> <span class="n">projOffsetD_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+        <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">e_u</span><span class="p">,</span> <span class="n">e_v</span><span class="p">,</span> <span class="n">x_do</span> <span class="o">-</span> <span class="n">x_s</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">A_inv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">pinv</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+
+        <span class="c1"># mangoct detector coordinate system offset from virtual detector</span>
+        <span class="n">pMatrix</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">A_inv</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="n">A_inv</span> <span class="o">@</span> <span class="n">x_s</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> \
+                     <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+    <span class="n">pMatrix_file</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">Value</span><span class="o">=</span><span class="n">pMatrix</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="sa">fr</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1">/pmatrix_file</span><span class="si">{</span><span class="n">postfix</span><span class="si">}</span><span class="s1">.jsonc&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">pMatrix_file</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">NumpyEncoder</span><span class="p">))</span>
+</code></pre></div></td></tr></table></div>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">2. Experimental considerations方案拟合 pMatrix 关键代码</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">getPerspectiveTransformMatrix3D</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">):</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span> <span class="o">=</span> <span class="n">src</span>
+    <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">C</span> <span class="o">=</span> <span class="n">dst</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+    <span class="n">S</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span> <span class="o">*</span> <span class="n">n</span><span class="p">,</span> <span class="mi">15</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="n">S</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">Y</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">Z</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="n">S</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="mi">4</span><span class="p">:</span><span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">Y</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">Z</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="n">S</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">][</span><span class="mi">8</span><span class="p">:</span><span class="mi">12</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">Y</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">Z</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="mi">1</span><span class="p">])</span>
+
+        <span class="n">S</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">0</span><span class="p">][</span><span class="mi">12</span><span class="p">:</span><span class="mi">15</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="o">-</span><span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">Y</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="o">-</span><span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">Z</span><span class="p">[</span><span class="n">i</span><span class="p">]])</span>
+        <span class="n">S</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="mi">12</span><span class="p">:</span><span class="mi">15</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="n">B</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="o">-</span><span class="n">B</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">Y</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="o">-</span><span class="n">B</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">Z</span><span class="p">[</span><span class="n">i</span><span class="p">]])</span>
+        <span class="n">S</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">][</span><span class="mi">12</span><span class="p">:</span><span class="mi">15</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="n">C</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="o">-</span><span class="n">C</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">Y</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="o">-</span><span class="n">C</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">Z</span><span class="p">[</span><span class="n">i</span><span class="p">]])</span>
+
+    <span class="n">Bias</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="n">n</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="n">Bias</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">Bias</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">B</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">Bias</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">C</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+    <span class="n">Unknown</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">S</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">S</span><span class="p">)</span> <span class="o">@</span> <span class="n">S</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">Bias</span>
+    <span class="n">matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Unknown</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">matrix</span>
+
+
+<span class="k">def</span> <span class="nf">getProjectionTransformMatrix3D</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">,</span> <span class="n">detectorElementSize</span><span class="p">):</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span> <span class="o">=</span> <span class="n">src</span>
+    <span class="n">U</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">dst</span>
+    <span class="n">S</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">11</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)):</span>
+        <span class="n">S</span><span class="p">[</span><span class="mi">2</span> <span class="o">*</span> <span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="o">-</span><span class="n">Y</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="o">-</span><span class="n">Z</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">S</span><span class="p">[</span><span class="mi">2</span> <span class="o">*</span> <span class="n">i</span><span class="p">][</span><span class="mi">8</span><span class="p">:</span><span class="mi">11</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">U</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">U</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">Y</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">U</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">Z</span><span class="p">[</span><span class="n">i</span><span class="p">]])</span>
+
+        <span class="n">S</span><span class="p">[</span><span class="mi">2</span> <span class="o">*</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="mi">4</span><span class="p">:</span><span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="o">-</span><span class="n">Y</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="o">-</span><span class="n">Z</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">S</span><span class="p">[</span><span class="mi">2</span> <span class="o">*</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="mi">8</span><span class="p">:</span><span class="mi">11</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">V</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">V</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">Y</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">V</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">Z</span><span class="p">[</span><span class="n">i</span><span class="p">]])</span>
+
+    <span class="n">C</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)):</span>
+        <span class="n">C</span><span class="p">[</span><span class="mi">2</span> <span class="o">*</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">U</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">C</span><span class="p">[</span><span class="mi">2</span> <span class="o">*</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">V</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+    <span class="n">Unknown</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">S</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">S</span><span class="p">)</span> <span class="o">@</span> <span class="n">S</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">C</span>
+    <span class="n">P</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Unknown</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+    <span class="n">A_inv</span> <span class="o">=</span> <span class="n">P</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">A_inv</span><span class="p">)</span>
+
+    <span class="n">e_u</span> <span class="o">=</span> <span class="n">A</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">L_u_cal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">e_u</span><span class="p">)</span>
+    <span class="n">ratio</span> <span class="o">=</span> <span class="n">L_u_cal</span> <span class="o">/</span> <span class="n">detectorElementSize</span>
+
+    <span class="n">new_P</span> <span class="o">=</span> <span class="n">ratio</span> <span class="o">*</span> <span class="n">P</span>
+
+    <span class="k">return</span> <span class="n">new_P</span>
+</code></pre></div></td></tr></table></div>
+<p>完整实现 <a href="https://github.com/CandleHouse/ArtifactReduction/blob/master/GeometricArtifact/GeometricArtifactCorrect.py">在这里 <span class="twemoji heart"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 20.408c-.492.308-.903.546-1.192.709-.153.086-.308.17-.463.252h-.002a.75.75 0 0 1-.686 0 16.709 16.709 0 0 1-.465-.252 31.147 31.147 0 0 1-4.803-3.34C3.8 15.572 1 12.331 1 8.513 1 5.052 3.829 2.5 6.736 2.5 9.03 2.5 10.881 3.726 12 5.605 13.12 3.726 14.97 2.5 17.264 2.5 20.17 2.5 23 5.052 23 8.514c0 3.818-2.801 7.06-5.389 9.262A31.146 31.146 0 0 1 14 20.408Z"/></svg></span></a></p>
+<p><em>[注]：以上图片仅供学习参考</em></p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p>Ouadah S, Stayman J W, Gang G J, et al. Self-calibration of cone-beam CT geometry using 3D–2D image registration[J]. Physics in Medicine &amp; Biology, 2016, 61(7): 2613.&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            回到页面顶部
+          </button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.expand", "navigation.top", "toc.integrate"], "search": "../assets/javascripts/workers/search.dfff1995.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.dff1b7c8.min.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
